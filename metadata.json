@@ -1,0 +1,6 @@
+{
+  "name": "BRONTICX Media",
+  "description": "Premium video editing, motion design, and high-CTR thumbnail agency portfolio for content creators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

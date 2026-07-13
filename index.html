@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRONTICX Media | Premium Video Editing Agency</title>
+    <link rel="preload" as="image" href="https://i.ytimg.com/vi/AJBU18gA5Uo/maxresdefault.jpg" />
+    <link rel="preload" as="image" href="https://i.ytimg.com/vi/sbhQ6Ay-2GU/maxresdefault.jpg" />
+    <link rel="preload" as="image" href="https://i.ytimg.com/vi/z7os8-Qj3Ec/maxresdefault.jpg" />
+    <script>
+      // Defensive fix for platforms/extensions trying to overwrite window.fetch in environments where it is a read-only getter
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          var fetchValue = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return fetchValue;
+            },
+            set: function(val) {
+              fetchValue = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          console.warn("Unable to redefine window.fetch property:", e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
