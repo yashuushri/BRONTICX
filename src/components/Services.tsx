@@ -74,11 +74,11 @@ export default function Services() {
           {SERVICES.map((service, index) => (
             <motion.div
               key={service.num}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="group cursor-pointer flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-5 py-4 items-start md:items-center border-b border-zinc-900/60 text-left hover:translate-x-1.5 transition-transform duration-300 ease-out"
+              viewport={{ once: true, amount: "some" }}
+              transition={{ duration: 0.35, delay: index * 0.04 }}
+              className="group cursor-pointer flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-5 py-4 items-start md:items-center border-b border-zinc-900/60 text-left hover:translate-x-1.5 transition-transform duration-200 ease-out"
             >
               {/* Number indicator */}
               <div className="md:col-span-1 font-mono text-[11px] text-zinc-650 group-hover:text-zinc-450 font-bold tracking-wider transition-colors duration-300">

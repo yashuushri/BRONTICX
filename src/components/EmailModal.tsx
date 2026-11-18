@@ -123,24 +123,6 @@ export default function EmailModal({ isOpen, onClose }: EmailModalProps) {
     e.preventDefault();
     setIsSending(true);
 
-    // Save submission to local storage
-    try {
-      const stored = localStorage.getItem("bronticx_direct_emails");
-      const currentList = stored ? JSON.parse(stored) : [];
-      const newEmail = {
-        id: "e-" + Math.random().toString(36).substring(2, 9),
-        email: email.trim(),
-        subject: subject.trim(),
-        description: description.trim(),
-        attachmentsCount: attachments.length,
-        createdAt: new Date().toLocaleString()
-      };
-      currentList.unshift(newEmail);
-      localStorage.setItem("bronticx_direct_emails", JSON.stringify(currentList));
-    } catch (err) {
-      console.error(err);
-    }
-
     // Simulate sending email beautifully
     setTimeout(() => {
       setIsSending(false);
@@ -235,13 +217,8 @@ export default function EmailModal({ isOpen, onClose }: EmailModalProps) {
                     required
                     value={email}
                     onChange={(e) => {
-                      const val = e.target.value;
-                      setEmail(val);
+                      setEmail(e.target.value);
                       if (emailError) setEmailError("");
-                      if (val.trim().toLowerCase() === "gamertechtech63@gmail.com") {
-                        localStorage.setItem("show_admin_panel", "true");
-                        window.dispatchEvent(new Event("admin_enabled"));
-                      }
                     }}
                     placeholder="you@example.com"
                     className="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3.5 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors"

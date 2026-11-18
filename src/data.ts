@@ -195,7 +195,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     channel: "TechChronicles",
     subscriberCount: "1.2M",
     avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150",
-    quote: "Working with BRONTICX Media was a turning point for my channel. Our average retention jumped by nearly 30% in just two weeks. They don't just cut clips—they craft a psychological experience that hooks viewers and refuses to let go. Our view velocity has never been this high.",
+    quote: "Working with BRONTICX was a turning point for my channel. Our average retention jumped by nearly 30% in just two weeks. They don't just cut clips; they craft a pacing structure that hooks viewers and keeps them watching. Our view velocity has never been this high.",
     viewsGenerated: "12M+ Views"
   },
   {

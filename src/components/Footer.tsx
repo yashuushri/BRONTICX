@@ -3,35 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import EmailModal from "./EmailModal";
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
+  onOpenLegal: (page: "privacy" | "terms") => void;
 }
 
-export default function Footer({ onNavigate }: FooterProps) {
+export default function Footer({ onNavigate, onOpenLegal }: FooterProps) {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
-
-  // Track rapid triple clicks on copyright to trigger password prompt
-  const [clickCount, setClickCount] = useState(0);
-  const [lastClickTime, setLastClickTime] = useState(0);
-
-  const handleCopyrightClick = () => {
-    const now = Date.now();
-    if (now - lastClickTime < 500) {
-      const newCount = clickCount + 1;
-      if (newCount >= 3) {
-        setClickCount(0);
-        window.dispatchEvent(new Event("trigger_admin_password_prompt"));
-      } else {
-        setClickCount(newCount);
-      }
-    } else {
-      setClickCount(1);
-    }
-    setLastClickTime(now);
-  };
 
   return (
     <footer id="footer" className="bg-black border-t border-zinc-900/50 py-6">
@@ -57,50 +38,50 @@ export default function Footer({ onNavigate }: FooterProps) {
             </div>
             
             {/* Copyright text */}
-            <span
-              onClick={handleCopyrightClick}
-              className="text-zinc-650 hover:text-zinc-500 transition-colors duration-200 text-[10px] sm:text-[11px] font-medium sm:border-l sm:border-zinc-900 sm:pl-3 mt-0.5 sm:mt-0 select-none cursor-pointer"
-              title="Click 3 times rapidly to authenticate"
-            >
-              © 2026 BRONTICX Media
+            <span className="text-zinc-650 transition-colors duration-200 text-[10px] sm:text-[11px] font-medium sm:border-l sm:border-zinc-900 sm:pl-3 mt-0.5 sm:mt-0 select-none">
+              © 2026 BRONTICX Studio
             </span>
           </div>
 
-          {/* Right side: Elegant minimal list of links with tiny font sizes */}
+          {/* Right side: Minimal links */}
           <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1.5 font-sans text-[10px] sm:text-[11px] text-zinc-500 font-medium">
             <button
-              onClick={() => onNavigate("work")}
-              className="hover:text-white transition-colors duration-200 cursor-pointer"
-            >
-              Portfolio
-            </button>
-            <button
-              onClick={() => onNavigate("work")}
-              className="hover:text-white transition-colors duration-200 cursor-pointer"
-            >
-              Thumbnails
-            </button>
-            <a
-              href="https://x.com/bronticx"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors duration-200"
-            >
-              X
-            </a>
-            <a
-              href="https://discord.gg/bronticx"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors duration-200"
-            >
-              Discord
-            </a>
-            <button
+              type="button"
               onClick={() => setIsEmailModalOpen(true)}
               className="hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none p-0 outline-none"
             >
               Email
+            </button>
+            <a
+              href="https://gab.com/bronticx"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition-colors duration-200"
+            >
+              Gab
+            </a>
+            <a
+              href="https://counter.social/bronticx"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition-colors duration-200"
+            >
+              CounterSocial
+            </a>
+            <span className="text-zinc-800 select-none" aria-hidden="true">|</span>
+            <button
+              type="button"
+              onClick={() => onOpenLegal("privacy")}
+              className="hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none p-0 outline-none"
+            >
+              Privacy Policy
+            </button>
+            <button
+              type="button"
+              onClick={() => onOpenLegal("terms")}
+              className="hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none p-0 outline-none"
+            >
+              Terms of Service
             </button>
           </div>
 

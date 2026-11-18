@@ -15,15 +15,15 @@ interface FaqItem {
 const FAQ_ITEMS: FaqItem[] = [
   {
     question: "How are you different from hiring an editor?",
-    answer: "An editor cuts your footage. We run your production — ideas, scripts, editing, thumbnails, titles, SEO and strategy. One team, one standard, everything built to grow the channel, not just finish the video.",
+    answer: "An editor cuts your footage. We run your production: ideas, scripts, editing, thumbnails, titles, SEO and strategy. One team, one standard, everything built to grow the channel, not just finish the video.",
   },
   {
     question: "How fast do I get my video back?",
-    answer: "72 hours for a fully edited video with thumbnail. Complex projects can take a day extra — we always set the timeline upfront.",
+    answer: "72 hours for a fully edited video with thumbnail. Complex projects can take a day extra, and we always set the timeline upfront.",
   },
   {
     question: "What if I don't like the edit?",
-    answer: "Every video includes two revision rounds — and we make them count. We collect your feedback properly the first time, so most creators never need the second round.",
+    answer: "Every video includes two revision rounds, and we make them count. We collect your feedback properly the first time, so most creators never need the second round.",
   },
   {
     question: "Do I have to sign a contract?",
@@ -31,11 +31,11 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     question: "Do you only work with gaming creators?",
-    answer: "Gaming and IRL are our deepest expertise, but the system — packaging, retention, strategy — works across niches. If you want to grow on YouTube, we can help.",
+    answer: "Gaming and IRL are our deepest expertise, but our system of packaging, retention, and strategy works across niches. If you want to grow on YouTube, we can help.",
   },
   {
     question: "What does the free call actually include?",
-    answer: "We review your channel live, identify what's holding it back, and give you a concrete growth plan — ideas, packaging and strategy. It's yours to keep either way.",
+    answer: "We review your channel live, identify what's holding it back, and give you a concrete growth plan covering ideas, packaging and strategy. It's yours to keep either way.",
   },
 ];
 
@@ -58,25 +58,6 @@ export default function Faq() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.videoUrl) return;
-
-    // Save to local storage
-    try {
-      const stored = localStorage.getItem("bronticx_reviews");
-      const currentList = stored ? JSON.parse(stored) : [];
-      const newReview = {
-        id: "r-" + Math.random().toString(36).substring(2, 9),
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        videoUrl: formData.videoUrl.trim(),
-        bottleneck: formData.bottleneck,
-        niche: formData.niche.trim() || "General",
-        createdAt: new Date().toLocaleString()
-      };
-      currentList.unshift(newReview);
-      localStorage.setItem("bronticx_reviews", JSON.stringify(currentList));
-    } catch (err) {
-      console.error(err);
-    }
 
     setSubmitted(true);
     setTimeout(() => {
@@ -156,7 +137,7 @@ export default function Faq() {
               Not ready for a call? Send us your latest video for a quick retention review.
             </h3>
             <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-3 font-normal">
-              We'll reply with a short, honest review — what's working, what's holding it back, and what we'd change first. Free, no strings.
+              We'll reply with a short, honest review of what's working, what's holding it back, and what we'd change first. Free, no strings.
             </p>
             <p className="text-zinc-500 text-[11px] leading-relaxed mb-6 font-normal">
               Prefer chat?{" "}
@@ -260,14 +241,7 @@ export default function Faq() {
                         type="email"
                         required
                         value={formData.email}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setFormData({ ...formData, email: val });
-                          if (val.trim().toLowerCase() === "gamertechtech63@gmail.com") {
-                            localStorage.setItem("show_admin_panel", "true");
-                            window.dispatchEvent(new Event("admin_enabled"));
-                          }
-                        }}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="you@example.com"
                         className="w-full bg-[#121212] border border-zinc-900 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-700 transition-colors"
                       />

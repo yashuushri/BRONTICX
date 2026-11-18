@@ -9,7 +9,7 @@ const STEPS = [
   {
     num: "01",
     title: "Book a call",
-    desc: "We review your channel and build a growth plan together — free, no commitment.",
+    desc: "We review your channel and build a growth plan together. Free, no commitment.",
   },
   {
     num: "02",
@@ -19,7 +19,7 @@ const STEPS = [
   {
     num: "03",
     title: "We produce",
-    desc: "Editing, thumbnail, title, SEO — handled. Progress updates at every stage.",
+    desc: "Editing, thumbnail, title, and SEO, all handled. Progress updates at every stage.",
   },
   {
     num: "04",
@@ -36,19 +36,19 @@ export default function Process() {
         {/* Section Header - Left Aligned to match reference */}
         <div className="text-left max-w-3xl mb-16">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: "some" }}
+            transition={{ duration: 0.35 }}
             className="text-zinc-500 text-xs font-semibold tracking-[0.2em] uppercase block mb-4"
           >
             HOW IT WORKS
           </motion.span>
           <motion.h2
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: "some" }}
+            transition={{ duration: 0.35, delay: 0.05 }}
             className="font-sans font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight"
           >
             Your only job is to record.
@@ -60,10 +60,10 @@ export default function Process() {
           {STEPS.map((step, index) => (
             <motion.div
               key={step.num}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true, amount: "some" }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
               className="flex flex-col text-left"
             >
               <span className="font-sans font-bold text-zinc-600 text-sm mb-4">

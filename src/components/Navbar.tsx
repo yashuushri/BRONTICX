@@ -17,11 +17,28 @@ export default function Navbar({ onNavigate, activeSection }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let rafId: number | null = null;
+
+    const updateScrolled = () => {
+      rafId = null;
+      const next = window.scrollY > 20;
+      setIsScrolled((prev) => (prev === next ? prev : next));
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleScroll = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updateScrolled);
+      }
+    };
+
+    updateScrolled();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, []);
 
   const navItems = [
@@ -39,10 +56,10 @@ export default function Navbar({ onNavigate, activeSection }: NavbarProps) {
   return (
     <header
       id="navbar-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,padding,border-color] duration-300 ${
         isScrolled
-          ? "bg-black/90 backdrop-blur-md border-b border-zinc-950 py-2"
-          : "bg-transparent py-4"
+          ? "bg-black/95 border-zinc-900/70 py-2"
+          : "bg-black/0 border-transparent py-4"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

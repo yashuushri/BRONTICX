@@ -10,7 +10,7 @@ const COMPARISON_ROWS = [
     feature: "Video editing",
     freelancer: "Yes",
     agency: "Yes",
-    bronticx: "Yes — retention-optimized",
+    bronticx: "Yes (retention-optimized)",
   },
   {
     feature: "Thumbnails & titles",
@@ -32,7 +32,7 @@ const COMPARISON_ROWS = [
   },
   {
     feature: "Turnaround",
-    freelancer: "Days–weeks",
+    freelancer: "Days to weeks",
     agency: "~1 week",
     bronticx: "~72 hours",
   },

@@ -12,10 +12,10 @@ export default function Stats() {
         
         {/* Section Label */}
         <motion.span
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: "some" }}
+          transition={{ duration: 0.35 }}
           className="text-zinc-500 text-[11px] font-bold tracking-[0.25em] uppercase"
         >
           THE REAL PROBLEM
@@ -23,10 +23,10 @@ export default function Stats() {
 
         {/* Section Title */}
         <motion.h2
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          viewport={{ once: true, amount: "some" }}
+          transition={{ duration: 0.35, delay: 0.05 }}
           className="font-sans font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight mt-3 mb-5"
         >
           Editing is eating your channel.
@@ -35,19 +35,19 @@ export default function Stats() {
         {/* Core Paragraphs */}
         <div className="space-y-4 max-w-xl mx-auto text-zinc-400 text-sm sm:text-base leading-relaxed font-normal">
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: "some" }}
+            transition={{ duration: 0.35, delay: 0.1 }}
           >
-            Every hour spent in the timeline is an hour lost on ideas, recording, or your audience. A freelancer fixes one video—it doesn't fix your system.
+            Every hour spent in the timeline is an hour lost on ideas, recording, or your audience. A freelancer fixes one video, not your system.
           </motion.p>
 
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true, amount: "some" }}
+            transition={{ duration: 0.35, delay: 0.14 }}
             className="text-zinc-300 font-medium"
           >
             <span className="text-white font-bold">You don't have a content problem. You have a production problem.</span>{" "}

@@ -21,7 +21,7 @@ const TIERS = [
       { label: "Turnaround", value: "72 hours" },
       { label: "Revision rounds", value: "2 per video" },
       { label: "Thumbnails", value: "Add-on" },
-      { label: "Strategy calls", value: "—" },
+      { label: "Strategy calls", value: "Not included" },
     ],
     popular: false,
     ctaText: "Book a free call",
@@ -30,7 +30,7 @@ const TIERS = [
     id: "growth",
     tag: "GROWTH",
     name: "Full production",
-    desc: "The full packaging stack — built to grow your views.",
+    desc: "The full packaging stack, built to grow your views.",
     rows: [
       { label: "Videos / month", value: "4 long-form + 8 shorts" },
       { label: "Max length", value: "Up to 20 min" },
@@ -86,11 +86,11 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
           {TIERS.map((tier) => (
             <motion.div
               key={tier.id}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className={`flex flex-col justify-between p-6 rounded-2xl bg-[#090909]/60 relative transition-all duration-300 ${
+              viewport={{ once: true, amount: "some" }}
+              transition={{ duration: 0.35 }}
+              className={`flex flex-col justify-between p-6 rounded-2xl bg-[#090909]/60 relative transition-colors duration-200 ${
                 tier.popular
                   ? "border border-zinc-700/80 shadow-2xl shadow-zinc-950"
                   : "border border-zinc-900/85 hover:border-zinc-800"

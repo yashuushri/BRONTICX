@@ -22,11 +22,12 @@
   background: #3f3f46;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
   background-color: #030303;
   color: #f4f4f5;
   font-family: var(--font-sans);
+  overflow-x: clip;
 }
 
 /* Accent radial glows */

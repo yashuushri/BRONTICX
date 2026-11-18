@@ -4,7 +4,6 @@
  */
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion } from "motion/react";
 import { Volume2, VolumeX } from "lucide-react";
 
 interface SpecItem {
@@ -15,9 +14,10 @@ interface SpecItem {
 
 interface PortfolioItem {
   id: string;
-  label: string;
-  src: string;
+  label?: string;
+  src?: string;
   poster?: string;
+  previewGif?: string;
   aspectRatio: string;
   spec: SpecItem;
 }
@@ -25,25 +25,13 @@ interface PortfolioItem {
 const COLUMN_1_ITEMS: PortfolioItem[] = [
   {
     id: "lf-1",
-    label: "Long form-Gaming",
-    src: "https://bixonticmedia.com/video/Video4.mp4",
-    poster: "https://i.ytimg.com/vi/sbhQ6Ay-2GU/maxresdefault.jpg",
+    poster: "https://img.youtube.com/vi/VrVq7G-QrdY/maxresdefault.jpg",
+    previewGif: "https://i.ytimg.com/an_webp/VrVq7G-QrdY/mqdefault_6s.webp?du=3000&sqp=CNrf99cG&rs=AOn4CLDtXda-YPamQhAEWbEZDOT53Q7anw",
     aspectRatio: "aspect-video",
     spec: {
-      problem: "Hours of raw gameplay with no story — viewers had no reason to stay.",
+      problem: "Hours of raw gameplay with no story, so viewers had no reason to stay.",
       whatWeDid: "Story-first cut, pattern-interrupt pacing, animated captions and sound design.",
       result: "Improved first 30-second pacing."
-    }
-  },
-  {
-    id: "sh-1",
-    label: "Shorts",
-    src: "https://bixonticmedia.com/video/Short1.mp4",
-    aspectRatio: "aspect-[3/4] md:aspect-[4/5]",
-    spec: {
-      problem: "Great long-form moments dying unseen — nothing built for the feed.",
-      whatWeDid: "Vertical reframe, bold captions, beat-matched cuts under 3 seconds each.",
-      result: "Reduced dead space across multiple POVs."
     }
   }
 ];
@@ -51,33 +39,22 @@ const COLUMN_1_ITEMS: PortfolioItem[] = [
 const COLUMN_2_ITEMS: PortfolioItem[] = [
   {
     id: "lf-2",
-    label: "Long form-Gaming",
-    src: "https://bixonticmedia.com/video/Video4.mp4",
-    poster: "https://i.ytimg.com/vi/z7os8-Qj3Ec/maxresdefault.jpg",
+    poster: "https://img.youtube.com/vi/vGI4m91TbH0/maxresdefault.jpg",
+    previewGif: "https://i.ytimg.com/an_webp/-B2IBgnNbG4/mqdefault_6s.webp?du=3000&sqp=CJSa-NcG&rs=AOn4CLD0rR-LnsHg_hqPRkAgHCdDUq3mtA",
     aspectRatio: "aspect-video",
     spec: {
-      problem: "Strong idea, weak opening — the first 30 seconds were losing viewers.",
+      problem: "Strong idea, weak opening. The first 30 seconds were losing viewers.",
       whatWeDid: "Re-structured the hook, front-loaded the payoff, tightened every dead second.",
       result: "Built a clearer story structure."
-    }
-  },
-  {
-    id: "sh-2",
-    label: "Shorts",
-    src: "https://bixonticmedia.com/video/Short3.mp4",
-    aspectRatio: "aspect-[3/4] md:aspect-[4/5]",
-    spec: {
-      problem: "Long gaps between big uploads — the channel went quiet in between.",
-      whatWeDid: "A repurposing system: one recording session turned into multiple shorts.",
-      result: "Added cleaner sound design and comedic timing."
     }
   }
 ];
 
 interface LazyVideoProps {
-  src: string;
+  src?: string;
   isMuted: boolean;
   poster?: string;
+  previewGif?: string;
   className?: string;
   playsInline?: boolean;
   loop?: boolean;
@@ -88,6 +65,7 @@ function LazyVideo({
   src,
   isMuted,
   poster,
+  previewGif,
   className = "w-full h-full object-cover",
   playsInline = true,
   loop = true,
@@ -97,6 +75,13 @@ function LazyVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const playPromiseRef = useRef<Promise<void> | null>(null);
   const [isInView, setIsInView] = useState(true);
+  const [shouldLoadPreview, setShouldLoadPreview] = useState(false);
+
+  useEffect(() => {
+    if (isHovered && previewGif) {
+      setShouldLoadPreview(true);
+    }
+  }, [isHovered, previewGif]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
@@ -109,7 +94,7 @@ function LazyVideo({
         setIsInView(entry.isIntersecting);
       },
       {
-        rootMargin: "300px", // Even wider margin for absolute safety
+        rootMargin: "300px",
         threshold: 0.01,
       }
     );
@@ -123,15 +108,14 @@ function LazyVideo({
     };
   }, []);
 
-  // Directly adjust muted property to prevent browser policies or sync lag
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = isMuted;
     }
   }, [isMuted]);
 
-  // Play only when both in view AND hovered to save CPU, bandwidth & honor user instruction
   useEffect(() => {
+    if (previewGif || !src) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -140,7 +124,6 @@ function LazyVideo({
       playPromiseRef.current = playPromise;
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
-          // Silent safe catch for standard browser policy interruptions
           console.debug("Autoplay/play was prevented or interrupted:", err);
         });
       }
@@ -152,7 +135,6 @@ function LazyVideo({
             video.pause();
           })
           .catch(() => {
-            // Even if play was interrupted/rejected, ensure we call pause
             video.pause();
           });
         playPromiseRef.current = null;
@@ -160,37 +142,61 @@ function LazyVideo({
         video.pause();
       }
     }
-  }, [isInView, isHovered]);
+  }, [isInView, isHovered, previewGif, src]);
 
   return (
     <div ref={containerRef} className="w-full h-full relative bg-zinc-950 overflow-hidden">
-      {/* Eagerly loaded high-priority poster image shown instantly */}
+      {/* Static high-res YouTube thumbnail */}
       {poster && (
         <img
           src={poster}
           alt=""
           loading="eager"
+          decoding="async"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 pointer-events-none z-10 ${
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 pointer-events-none z-10 ${
             isHovered ? "opacity-0" : "opacity-100"
           }`}
         />
       )}
-      
-      <video
-        ref={videoRef}
-        src={src}
-        loop={loop}
-        muted={isMuted}
-        playsInline={playsInline}
-        preload="auto"
-        className={className}
-      />
+
+      {/* Animated WebP / GIF preview loaded on demand when hovered */}
+      {previewGif && shouldLoadPreview ? (
+        <img
+          src={previewGif}
+          alt=""
+          decoding="async"
+          referrerPolicy="no-referrer"
+          className={className}
+        />
+      ) : src ? (
+        <video
+          ref={videoRef}
+          src={src}
+          loop={loop}
+          muted={isMuted}
+          playsInline={playsInline}
+          preload="metadata"
+          className={className}
+        />
+      ) : null}
     </div>
   );
 }
 
-function PortfolioVideo({ src, poster, className, label }: { src: string; poster?: string; className?: string; label?: string }) {
+function PortfolioVideo({
+  src,
+  poster,
+  previewGif,
+  className,
+  label,
+}: {
+  src?: string;
+  poster?: string;
+  previewGif?: string;
+  className?: string;
+  label?: string;
+}) {
   const [isMuted, setIsMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -210,33 +216,27 @@ function PortfolioVideo({ src, poster, className, label }: { src: string; poster
       onClick={handleContainerClick}
       className={`relative overflow-hidden bg-zinc-950 rounded-2xl border border-zinc-900/60 group cursor-pointer ${className}`}
     >
-      <LazyVideo src={src} isMuted={isMuted} isHovered={isHovered} poster={poster} />
+      <LazyVideo src={src} isMuted={isMuted} isHovered={isHovered} poster={poster} previewGif={previewGif} />
       {label && (
-        <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white font-sans text-[10px] font-bold px-2.5 py-1 rounded-md border border-zinc-800/40 tracking-wide z-10">
+        <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white font-sans text-[10px] font-bold px-2.5 py-1 rounded-md border border-zinc-800/40 tracking-wide z-20">
           {label}
         </span>
       )}
 
-      {/* Zero pause overlay/play button clutter on hover state for absolute smooth playback */}
-
-      <button
-        onClick={toggleMute}
-        className="absolute bottom-3 right-3 bg-black/75 hover:bg-black border border-zinc-800/80 text-zinc-300 hover:text-white p-2 rounded-full flex items-center justify-center transition-colors cursor-pointer z-10"
-      >
-        {isMuted ? <VolumeX className="w-4 h-4 text-zinc-400" /> : <Volume2 className="w-4 h-4 text-white" />}
-      </button>
+      {!previewGif && src && (
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-3 right-3 bg-black/75 hover:bg-black border border-zinc-800/80 text-zinc-300 hover:text-white p-2 rounded-full flex items-center justify-center transition-colors cursor-pointer z-20"
+        >
+          {isMuted ? <VolumeX className="w-4 h-4 text-zinc-400" /> : <Volume2 className="w-4 h-4 text-white" />}
+        </button>
+      )}
     </div>
   );
 }
 
 function FeaturedVideo() {
-  const [isMuted, setIsMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMuted((prev) => !prev);
-  };
 
   const handleContainerClick = () => {
     setIsHovered((prev) => !prev);
@@ -250,20 +250,11 @@ function FeaturedVideo() {
       className="relative aspect-video w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-900/60 group mb-12 cursor-pointer"
     >
       <LazyVideo 
-        src="https://bixonticmedia.com/video/Video2.mp4" 
-        isMuted={isMuted} 
+        isMuted={true}
         isHovered={isHovered} 
-        poster="https://i.ytimg.com/vi/AJBU18gA5Uo/maxresdefault.jpg" 
+        poster="https://img.youtube.com/vi/WzCPFhoqwY0/maxresdefault.jpg"
+        previewGif="https://i.ytimg.com/an_webp/WzCPFhoqwY0/mqdefault_6s.webp?du=3000&sqp=CO_r99cG&rs=AOn4CLBxdpBi8iRf0R3swJW-16mAziHxiw"
       />
-      
-      {/* Zero pause overlay/play button clutter on hover state for absolute smooth playback */}
-
-      <button
-        onClick={toggleMute}
-        className="absolute bottom-4 right-4 bg-black/85 hover:bg-black border border-zinc-800 text-white text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-all duration-200 cursor-pointer shadow-md z-10"
-      >
-        {isMuted ? "Unmute" : "Mute"}
-      </button>
     </div>
   );
 }
@@ -274,6 +265,7 @@ function PortfolioCard({ item }: { item: PortfolioItem }) {
       <PortfolioVideo
         src={item.src}
         poster={item.poster}
+        previewGif={item.previewGif}
         label={item.label}
         className={item.aspectRatio}
       />

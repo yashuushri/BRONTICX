@@ -30,7 +30,9 @@ export default function BookingCalendar({ selectedPlan, onResetPlan }: BookingCa
   // Sync chosen plan
   useEffect(() => {
     if (selectedPlan) {
-      setChosenPlan(selectedPlan);
+      const normalized =
+        selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1).toLowerCase();
+      setChosenPlan(normalized);
       if (currentStep === "success") {
         setCurrentStep("datetime");
         setSelectedDate(null);
@@ -65,27 +67,6 @@ export default function BookingCalendar({ selectedPlan, onResetPlan }: BookingCa
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (name && email && channelName) {
-      // Save submission to local storage
-      try {
-        const stored = localStorage.getItem("bronticx_bookings");
-        const currentList = stored ? JSON.parse(stored) : [];
-        const newBooking = {
-          id: "b-" + Math.random().toString(36).substring(2, 9),
-          name: name.trim(),
-          email: email.trim(),
-          channelName: channelName.trim(),
-          subs: subs.trim() || "N/A",
-          chosenPlan: chosenPlan || "General Consultation",
-          message: message.trim() || "No custom message",
-          date: `July ${selectedDate}, 2026`,
-          time: selectedTime || "N/A",
-          createdAt: new Date().toLocaleString()
-        };
-        currentList.unshift(newBooking);
-        localStorage.setItem("bronticx_bookings", JSON.stringify(currentList));
-      } catch (err) {
-        console.error(err);
-      }
       setCurrentStep("success");
     }
   };
@@ -328,14 +309,7 @@ export default function BookingCalendar({ selectedPlan, onResetPlan }: BookingCa
                         type="email"
                         required
                         value={email}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setEmail(val);
-                          if (val.trim().toLowerCase() === "gamertechtech63@gmail.com") {
-                            localStorage.setItem("show_admin_panel", "true");
-                            window.dispatchEvent(new Event("admin_enabled"));
-                          }
-                        }}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="w-full bg-zinc-900/40 text-white border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-zinc-700"
                         placeholder="john@example.com"
                       />
